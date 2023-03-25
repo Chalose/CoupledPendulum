@@ -5,7 +5,7 @@
 3、体系自由度为2，取广义坐标为两摆各自与竖直方向的偏角θ、ϕ，对应广义动量: P₁ = m*a^2*θ、P₂ = m*a^2*ϕ
 4、体系有2s(s=2)个简正频率，为 ω₁ = (g/a)^0.5, ω₂ = -(g/a)^0.5, ω₃ = (2k/m + g/a)^0.5, ω₄ = -(2k/m + g/a)^0.5
 =#
-using Plots, FFTW, DifferentialEquations
+using Plots, DifferentialEquations
 
 function CP!(du, u, Cnum, t)
     m, a, k, g = Cnum
