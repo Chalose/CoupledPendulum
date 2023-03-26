@@ -6,9 +6,12 @@
 4、体系有2s(s=2)个简正频率，为 ω₁ = (g/a)^0.5, ω₂ = -(g/a)^0.5, ω₃ = (2k/m + g/a)^0.5, ω₄ = -(2k/m + g/a)^0.5
 =#
 using Plots, DifferentialEquations
+const m = 1.0
+const a = 1.0
+const k = 50.0
+const g = 9.8
 
-function CP!(du, u, Cnum, t)
-    m, a, k, g = Cnum
+function CP!(du, u, p, t)
     # Hamilton正则方程
     du[1] = u[2]/(m*a^2)
     du[2] = k*a^2*(u[3] - u[1]) - m*g*a*u[1]
@@ -18,23 +21,18 @@ end
 
 function main()
     # 参数设置
-    m = 1.0     
-    a = 1.0
-    k = 50.0
-    g = 9.8
     dt = 0.001
     tmax = 20
     # 广义坐标、广义动量初值
-    θ₀ = 0.04
+    θ₀ = π/2
     P₁₀ = 0.0
-    ϕ₀ = 0.0
+    ϕ₀ = -π/2
     P₂₀ = 0.0
 
     # 求解Hamilton正则方程
     tspan = (0, tmax)
     u₀ = [θ₀; P₁₀; ϕ₀; P₂₀]
-    Cnum = [m a k g]
-    prob = ODEProblem(CP!, u₀, tspan, Cnum)
+    prob = ODEProblem(CP!, u₀, tspan)
     sol = solve(prob, Tsit5(), saveat=dt)  # saveat 指定t步长
     
     t = sol.t
@@ -66,6 +64,6 @@ function main()
     fig4 = plot(fig1, fig2, fig3, 
         layout=(3, 1),
         size=(700,800))
-    #savefig(fig4, "CoupledPendulum_phase.png")
+    #savefig(fig4, "CoupledPendulum01_phase.png")
 end
 main()
